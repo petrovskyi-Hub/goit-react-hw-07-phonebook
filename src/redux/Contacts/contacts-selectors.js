@@ -9,3 +9,5 @@ export const getFilteredContacts = state => {
     contact.name.toLowerCase().includes(normalizedFilter),
   );
 };
+
+export const getIsLoading = state => state.contacts.isLoading;

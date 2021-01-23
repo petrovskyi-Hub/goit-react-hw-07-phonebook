@@ -1,18 +1,33 @@
 import { createReducer } from '@reduxjs/toolkit';
-import shortid from 'shortid';
-import { addContact, deleteContact } from './contacts-actions';
+import {
+  fetchContactsRequest,
+  fetchContactsSuccess,
+  fetchContactsError,
+  addContactsRequest,
+  addContactsSuccess,
+  addContactsError,
+  deleteContactsRequest,
+  deleteContactsSuccess,
+  deleteContactsError,
+} from './contacts-actions';
 
-export const itemsReducer = createReducer([], {
-  [addContact]: (state, action) => {
-    const contact = {
-      id: shortid.generate(),
-      name: action.payload.name,
-      number: action.payload.number,
-    };
+export const items = createReducer([], {
+  [fetchContactsSuccess]: (_, { payload }) => payload,
+  [addContactsSuccess]: (state, { payload }) => [...state, payload],
+  [deleteContactsSuccess]: (state, { payload }) =>
+    state.filter(({ id }) => id !== payload),
+});
 
-    return [...state, contact];
-  },
+export const isLoading = createReducer(false, {
+  [fetchContactsRequest]: () => true,
+  [fetchContactsSuccess]: () => false,
+  [fetchContactsError]: () => false,
 
-  [deleteContact]: (state, action) =>
-    state.filter(contact => contact.id !== action.payload),
+  [addContactsRequest]: () => true,
+  [addContactsSuccess]: () => false,
+  [addContactsError]: () => false,
+
+  [deleteContactsRequest]: () => true,
+  [deleteContactsSuccess]: () => false,
+  [deleteContactsError]: () => false,
 });

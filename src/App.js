@@ -1,23 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import './App.css';
 import Container from './components/Container/Container';
 import ContactForm from './components/ContactForm/ContactForm';
 import ContactsList from './components/ContactsList/ContactsList';
 import Filter from './components/Filter/Filter';
-import { getContacts } from './redux/Contacts/contacts-selectors';
+import { fetchContacts } from './redux/Contacts/contacts-operations';
+import { getContacts, getIsLoading } from './redux/Contacts/contacts-selectors';
 
 // storage.save('Contacts', [
-//   { id: shortid.generate(), name: 'Rosie Simpson', number: '459-12-56' },
-//   { id: shortid.generate(), name: 'Hermione Kline', number: '443-89-12' },
-//   { id: shortid.generate(), name: 'Eden Clements', number: '645-17-79' },
-//   { id: shortid.generate(), name: 'Annie Copeland', number: '227-91-26' },
+//   { id: 0, name: 'Rosie Simpson', number: '459-12-56' },
+//   { id: 1, name: 'Hermione Kline', number: '443-89-12' },
+//   { id: 2, name: 'Eden Clements', number: '645-17-79' },
+//   { id: 3, name: 'Annie Copeland', number: '227-91-26' },
 // ]);
 
 function App() {
+  const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
-  // useEffect(() => {
-  //   storage.save('Contacts', contacts);
-  // }, [contacts]);
+  const isLoading = useSelector(getIsLoading);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <Container>
@@ -31,14 +36,10 @@ function App() {
       ) : (
         <p>Your phonebook is empty. Please add contact.</p>
       )}
+
+      {isLoading && <p>Loading...</p>}
     </Container>
   );
 }
-
-// const mapStateToProps = state => {
-//   return {
-//     contacts: state.contacts.items,
-//   };
-// };
 
 export default App;
