@@ -3,12 +3,12 @@ import * as contactsAPI from '../../services/contacts-api';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchContacts',
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const contacts = await contactsAPI.getContacts();
       return contacts;
     } catch (error) {
-      return error;
+      return rejectWithValue(error);
     }
   },
 );

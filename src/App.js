@@ -6,7 +6,11 @@ import ContactForm from './components/ContactForm/ContactForm';
 import ContactsList from './components/ContactsList/ContactsList';
 import Filter from './components/Filter/Filter';
 import { fetchContacts } from './redux/Contacts/contacts-operations';
-import { getContacts, getIsLoading } from './redux/Contacts/contacts-selectors';
+import {
+  getContacts,
+  getIsLoading,
+  getError,
+} from './redux/Contacts/contacts-selectors';
 
 // storage.save('Contacts', [
 //   { id: 0, name: 'Rosie Simpson', number: '459-12-56' },
@@ -19,6 +23,7 @@ function App() {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
   const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getError);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -38,6 +43,7 @@ function App() {
       )}
 
       {isLoading && <p>Loading...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </Container>
   );
 }
